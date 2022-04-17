@@ -128,3 +128,38 @@ def get_theme_colors(colors_dict):
         output[name] = deduced
     
     return output
+
+def get_theme_from_file(path, theme = "dark"):
+    css_file = read_css(path)
+
+    blocks = find_block(css_file, "")
+
+    light_theme_name = ".theme-light"
+    dark_theme_name = ".theme-dark"
+
+    general_blocks = []
+    ligt_theme_blocks = []
+    dark_theme_blocks = []
+
+    for block in blocks:
+        if dark_theme_name in block:
+            dark_theme_blocks.append(block)
+        elif light_theme_name in block:
+            ligt_theme_blocks.append(block)
+        else:
+            general_blocks.append(block)
+
+    used_theme_blocks = dark_theme_blocks if theme == "dark" else ligt_theme_blocks
+    global_block_list = []
+
+    for block in general_blocks:
+        global_block_list.append(block)
+        
+    for block in used_theme_blocks:
+        global_block_list.append(block) 
+
+    styles = "\n".join(global_block_list)
+    values_dict = get_values_dict(styles)
+    colors_dict = get_theme_colors(values_dict)
+
+    return colors_dict
