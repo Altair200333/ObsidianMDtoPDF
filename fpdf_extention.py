@@ -126,7 +126,10 @@ class StyledPDF(ColoredPDF):
     def set_text_style(self, style: TextStyle):
         self.text_style = style
 
-        self.set_font("Arial", '', size = style.font_size)
+        #self.set_font("Arial", '', size = style.font_size)
+        self.add_font("Arial", "", "arial.ttf", uni=True)
+        self.set_font('Arial', '', 14)
+
         self.set_text_color(style.font_color[0], style.font_color[1], style.font_color[2])
 
         if style.background_color is not None:
