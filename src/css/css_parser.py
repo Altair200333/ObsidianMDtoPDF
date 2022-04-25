@@ -1,6 +1,6 @@
 import re
 import numpy as np
-from color_utils import *
+from src.css.color_utils import *
 
 def read_css(path):
     file = open(path, mode='r')

@@ -1,11 +1,12 @@
 import numpy as np
 from PIL import Image
 import re
-from css_parser import *
+from src.css.css_parser import *
 from fpdf import FPDF
-from color_utils import *
+from src.css.color_utils import *
 import os.path
-from fpdf_extention import *
+from src.fpdf_extention import *
+from src.style_blocks import *
 
 
 def read_contents(path):
@@ -15,13 +16,19 @@ def read_contents(path):
     file.close()
     return file_text
 
-def convert_md(file_text, pdf: PrintablePDF, blocks, pool: StylePool):
+def convert_md_to_pdf(file_text, pdf: PrintablePDF, pool: StylePool):
     """
     Prints provided markdown file to PDF using mardkown blocks
     """
+
+    #supported style blocks
+    blocks = [H1Block(pool), H2Block(pool), H3Block(pool), H4Block(pool), H5Block(pool), H6Block(pool), MarkBlock(pool), CodeBlock(pool)]
+
     char_buffer = []
     regular_buffer = []
     active_block = None
+    
+    pdf.set_doc_style(pool.doc_style)
 
     pdf.add_page()
     pdf.set_text_style(pool.style_normal)
@@ -62,3 +69,7 @@ def convert_md(file_text, pdf: PrintablePDF, blocks, pool: StylePool):
     for letter in regular_buffer:
         pdf.print_char(letter)
     pdf.finish_print()
+
+
+    def import_obsidian_styles():
+        pass

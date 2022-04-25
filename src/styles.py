@@ -1,5 +1,5 @@
 from math import fabs
-from color_utils import *
+from src.css.color_utils import *
 
 def try_convert_color(color):
     if type(color) is str:

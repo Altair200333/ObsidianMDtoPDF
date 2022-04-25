@@ -1,10 +1,10 @@
 import numpy as np
 from PIL import Image
 import re
-from css_parser import *
+from src.css.css_parser import *
 from fpdf import FPDF
-from color_utils import *
-from styles import *
+from src.css.color_utils import *
+from src.styles import *
 import os.path
 
 #http://www.fpdf.org/en/script/script74.php
@@ -221,3 +221,9 @@ class PrintablePDF(StyledPDF):
             self.set_xy(self.pointer_x, self.pointer_y)
         
         super().set_text_style(style)
+    
+    def add_page(self, orientation=''):
+        # do normal add page stuff
+        super().add_page(orientation)
+        
+        print("add page")

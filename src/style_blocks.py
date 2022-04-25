@@ -1,4 +1,4 @@
-from styles import *
+from src.styles import *
 
 class MDBlock:
     def __init__(self, pool: StylePool):
