@@ -158,7 +158,7 @@ class PrintablePDF(StyledPDF):
 
         self.pointer_x = 0
         self.pointer_y = 0
-        
+        self.last_page = 0
         super().__init__(orientation, unit, format)
 
     def bullet(self):
@@ -168,11 +168,17 @@ class PrintablePDF(StyledPDF):
         self.text_buffer += x
 
         if x == '\n':
+            last_page = self.page
             self.finish_print()
+            current_page = self.page
 
             self.pointer_x = self.l_margin
-            self.pointer_y += self.cell_h
+            if current_page != last_page:
+                self.pointer_y = self.t_margin
+            else:
+                self.pointer_y += self.cell_h
             self.set_xy(self.pointer_x, self.pointer_y)
+
     def print_char(self, x):
         if x == '\t':
             for i in range(4):
@@ -181,15 +187,16 @@ class PrintablePDF(StyledPDF):
             self._print_char(x)
             
     def finish_print(self):
-        if not self.text_buffer:
+        if not self.text_buffer or len(self.text_buffer) == 0:
             return
         
         ret = self.multi_cell(0, self.cell_h, self.text_buffer, split_only = True)
         
         fill = self.text_style.background_color is not None
-        
+
         if len(ret) > 1:
             r = ret[0]
+            print("cell with " + r.replace('\n', '\\n'))
             self.cell(self.cell_w, self.cell_h, r, 0, 2, 'J', fill)
 
             self.set_x(self.l_margin)
@@ -199,21 +206,27 @@ class PrintablePDF(StyledPDF):
                 
             ret = self.multi_cell(0, self.cell_h, text, split_only = True)                
         
-        self.print_bloks(ret)
-        
 
+        self.print_bloks(ret)
         self.text_buffer = ""
-    
+
+        
     def print_bloks(self, ret):
         fill = self.text_style.background_color is not None
-
+        print(len(ret))
         for r in ret:
             chars = self.get_string_width(r)# np.add.reduce([cw.get(c,0) for c in r])
             
             self.pointer_x = chars+ self.x# + self.l_margin 
             self.pointer_y = self.y
 
+            print("print with " + r.replace('\n', '\\n'))
+
+            print(self.get_y())
+
             self.cell(self.cell_w, self.cell_h, r, 0, 2, 'J', fill)
+
+            print(self.get_y())
 
     def set_text_style(self, style: TextStyle):
         if self.text_buffer:
@@ -226,4 +239,20 @@ class PrintablePDF(StyledPDF):
         # do normal add page stuff
         super().add_page(orientation)
         
-        print("add page")
+        print("new page: " + self.text_buffer.replace('\n', '\\n'))
+
+    #def accept_page_break(self):
+    #    return super().accept_page_break()
+    #    print("accept")
+    #    return False
+    #    self.last_page += 1
+    #    if self.last_page != self.page_no():
+    #        self.page = self.last_page
+    #        self.set_y(self.t_margin)
+    #        return False
+#
+    #    return True
+    #    #return super().accept_page_break
+
+    def convert_to_ascii(self, text):
+        return " ".join(str(ord(char)) for char in text)
