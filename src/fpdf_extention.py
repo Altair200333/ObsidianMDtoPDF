@@ -174,7 +174,7 @@ class PrintablePDF(StyledPDF):
 
             self.pointer_x = self.l_margin
             if current_page != last_page:
-                self.pointer_y = self.t_margin
+                self.pointer_y = self.get_y()
             else:
                 self.pointer_y += self.cell_h
             self.set_xy(self.pointer_x, self.pointer_y)
