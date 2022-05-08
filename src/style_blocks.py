@@ -25,7 +25,8 @@ class H1Block(MDBlock):
         super().__init__(pool)
         self.prefix = "# "
         self.style = pool.style_h1
-        
+        self.regex = re.compile(r"^# (.*)", re.MULTILINE)
+
     def is_start(self, buffer):
         last_simbols = buffer[-len(self.prefix):]
 
@@ -53,31 +54,35 @@ class H2Block(H1Block):
         super().__init__(pool)
         self.prefix = "## "
         self.style = pool.style_h2
+        self.regex = re.compile(r"^## (.*)", re.MULTILINE)
 
 class H3Block(H1Block):
     def __init__(self, pool: StylePool):
         super().__init__(pool)
         self.prefix = "### "
         self.style = pool.style_h3
+        self.regex = re.compile(r"^### (.*)", re.MULTILINE)
 
 class H4Block(H1Block):
     def __init__(self, pool: StylePool):
         super().__init__(pool)
         self.prefix = "#### "
         self.style = pool.style_h4
+        self.regex = re.compile(r"^#### (.*)", re.MULTILINE)
 
 class H5Block(H1Block):
     def __init__(self, pool: StylePool):
         super().__init__(pool)
         self.prefix = "##### "
         self.style = pool.style_h5
-
+        self.regex = re.compile(r"^##### (.*)", re.MULTILINE)
 
 class H6Block(H1Block):
     def __init__(self, pool: StylePool):
         super().__init__(pool)
         self.prefix = "###### "
         self.style = pool.style_h5
+        self.regex = re.compile(r"^###### (.*)", re.MULTILINE)
 
 class MarkBlock(MDBlock):
     def __init__(self, pool: StylePool):
