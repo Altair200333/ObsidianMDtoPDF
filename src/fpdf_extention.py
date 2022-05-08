@@ -173,10 +173,13 @@ class PrintablePDF(StyledPDF):
             current_page = self.page
 
             self.pointer_x = self.l_margin
+
+            # during print new page was added; no need to manually advance Y pos
             if current_page != last_page:
                 self.pointer_y = self.get_y()
             else:
                 self.pointer_y += self.cell_h
+
             self.set_xy(self.pointer_x, self.pointer_y)
 
     def print_char(self, x):
@@ -190,14 +193,19 @@ class PrintablePDF(StyledPDF):
         if not self.text_buffer or len(self.text_buffer) == 0:
             return
         
+        # get input string split into rows automatycally
         ret = self.multi_cell(0, self.cell_h, self.text_buffer, split_only = True)
         
-        fill = self.text_style.background_color is not None
-
+        need_to_fill_fill = self.text_style.background_color is not None
+        
+        '''
+            if there is more then one row print the first one at current pointer position
+            the rest of them will be printed normally
+        '''
         if len(ret) > 1:
             r = ret[0]
-            print("cell with " + r.replace('\n', '\\n'))
-            self.cell(self.cell_w, self.cell_h, r, 0, 2, 'J', fill)
+
+            self.cell(self.cell_w, self.cell_h, r, 0, 2, 'J', need_to_fill_fill)
 
             self.set_x(self.l_margin)
             
@@ -208,51 +216,37 @@ class PrintablePDF(StyledPDF):
         
 
         self.print_bloks(ret)
+
+        # clear buffer
         self.text_buffer = ""
 
         
     def print_bloks(self, ret):
         fill = self.text_style.background_color is not None
-        print(len(ret))
+
         for r in ret:
-            chars = self.get_string_width(r)# np.add.reduce([cw.get(c,0) for c in r])
+
+            # not sure if this is always correct
+            chars = self.get_string_width(r)
             
-            self.pointer_x = chars+ self.x# + self.l_margin 
+            self.pointer_x = chars + self.x
             self.pointer_y = self.y
-
-            print("print with " + r.replace('\n', '\\n'))
-
-            print(self.get_y())
 
             self.cell(self.cell_w, self.cell_h, r, 0, 2, 'J', fill)
 
-            print(self.get_y())
-
     def set_text_style(self, style: TextStyle):
+
+        # if something is not printed yet flush it
         if self.text_buffer:
             self.finish_print()
             self.set_xy(self.pointer_x, self.pointer_y)
         
         super().set_text_style(style)
     
+    # totally useless overload
     def add_page(self, orientation=''):
         # do normal add page stuff
         super().add_page(orientation)
-        
-        print("new page: " + self.text_buffer.replace('\n', '\\n'))
-
-    #def accept_page_break(self):
-    #    return super().accept_page_break()
-    #    print("accept")
-    #    return False
-    #    self.last_page += 1
-    #    if self.last_page != self.page_no():
-    #        self.page = self.last_page
-    #        self.set_y(self.t_margin)
-    #        return False
-#
-    #    return True
-    #    #return super().accept_page_break
 
     def convert_to_ascii(self, text):
         return " ".join(str(ord(char)) for char in text)

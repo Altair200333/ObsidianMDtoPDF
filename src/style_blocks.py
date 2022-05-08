@@ -1,3 +1,4 @@
+import re
 from src.styles import *
 
 class MDBlock:
@@ -115,7 +116,7 @@ class MarkBlock(MDBlock):
             self.prefix_size += 1
 
         self.buffer = regular_buffer[-self.prefix_size:-1]
-        print(self.prefix_size, "".join(self.buffer))
+        #print(self.prefix_size, "".join(self.buffer))
 
     def is_end(self, buffer):
         return buffer[-1] == '\n'
@@ -164,3 +165,55 @@ class CodeBlock(MDBlock):
         pdf.set_text_style(prev_style)
         self.buffer = []
 
+
+class LinkBlock(MDBlock):
+    def __init__(self, pool: StylePool):
+        super().__init__(pool)
+        self.prefix = "["
+        self.style = pool.style_link
+        self.regex = re.compile(r"\[(.*)\]\((.*)\)")
+
+    def is_start(self, buffer):
+        last_simbols = buffer[-len(self.prefix):]
+
+        return "".join(last_simbols) == self.prefix
+
+    def is_end(self, buffer):
+        buffer_text = "".join(buffer)
+        matches = self.regex.findall(buffer_text)
+
+        return len(matches) > 0
+    
+    def get_prefix_size(self):
+        return len(self.prefix)
+
+    def start(self, regular_buffer):
+        self.buffer = regular_buffer[-self.get_prefix_size():]
+
+    def flush(self, pdf): 
+        buffer_text = "".join(self.buffer)
+
+        matches = self.regex.findall(buffer_text)
+        if len(matches) < 1:
+            return
+        
+        link_text = matches[0][0]
+        link_address = matches[0][1]
+
+        prev_style = pdf.text_style
+        
+        pdf.set_text_style(self.style)
+
+        start_pos = (pdf.pointer_x, pdf.pointer_y)
+
+        for x in link_text:
+            pdf.print_char(x)
+        
+        width = pdf.get_string_width(link_text)
+        
+        pdf.set_text_style(prev_style)
+
+        end_pos = (pdf.pointer_x, pdf.pointer_y)
+        pdf.link(start_pos[0], start_pos[1], width, pdf.cell_h, link_address)
+
+        self.buffer = []

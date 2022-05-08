@@ -22,7 +22,7 @@ def convert_md_to_pdf(file_text, pdf: PrintablePDF, pool: StylePool):
     """
 
     #supported style blocks
-    blocks = [H1Block(pool), H2Block(pool), H3Block(pool), H4Block(pool), H5Block(pool), H6Block(pool), MarkBlock(pool), CodeBlock(pool)]
+    blocks = [H1Block(pool), H2Block(pool), H3Block(pool), H4Block(pool), H5Block(pool), H6Block(pool), MarkBlock(pool), CodeBlock(pool), LinkBlock(pool)]
 
     char_buffer = []
     regular_buffer = []

@@ -46,4 +46,5 @@ class StylePool:
 
         self.style_mark = TextStyle(16, "#000099", "cc6699")
         self.style_code = TextStyle(16, "#000099", "000066")
+        self.style_link = TextStyle(16, "#ff5050")
 
