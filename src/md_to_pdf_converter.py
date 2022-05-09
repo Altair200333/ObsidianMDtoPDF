@@ -60,8 +60,7 @@ def convert_md_to_pdf(file_text, pdf: PrintablePDF, pool: StylePool):
                 current_style.flush(pdf)
                 current_style = None
 
-                if c == '\n':
-                    pdf.print_char(c)
+                pdf.print_char(c)
                 
                 # if there is was style before this make it the main one
                 if len(style_stack) > 0:
