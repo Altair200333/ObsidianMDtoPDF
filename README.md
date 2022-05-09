@@ -31,14 +31,14 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Obsidian allows you to create beautiful documents but normal Md to PDF convertes do not pay attention to it's styles, so i decided to create my own converter that would satisfy this requirement.
+Obsidian allows you to create beautiful documents but normal Md to PDF convertes do not pay attention to it's styles, so i decided to create my own converter that would do that.
 
 ## Usage
 
 ```
 # import styles
 pool = import_obsidian_styles("your_style.css")
-# read you document
+# read your document
 file_text = read_contents("your_document.md")
 
 # create PDF document
