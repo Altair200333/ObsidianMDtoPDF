@@ -77,8 +77,4 @@ pdf.output("output.pdf")
 [stars-url]: https://github.com/Altair200333/ObsidianMDtoPDF/stargazers
 [issues-shield]: https://img.shields.io/github/issues/Altair200333/ObsidianMDtoPDF?style=for-the-badge
 [issues-url]: https://github.com/Altair200333/ObsidianMDtoPDF/issues
-[license-shield]: https://img.shields.io/github/license/Altair200333/ObsidianMDtoPDF?style=for-the-badge
-[license-url]: https://github.com/Altair200333/ObsidianMDtoPDF/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
