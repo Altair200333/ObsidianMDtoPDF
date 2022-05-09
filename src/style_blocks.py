@@ -1,3 +1,4 @@
+import math
 import re
 from src.styles import *
 
@@ -19,11 +20,14 @@ class Regex1Group(MDBlock):
 
     def flush(self, pdf):
         buffer_text = "".join(self.buffer)
+
+        text = buffer_text
+
         matches = self.regex.findall(buffer_text)
-        if len(matches) < 1:
-            return
-        text = matches[0]
-        print(matches)
+
+        if len(matches) > 0:
+            text = matches[0]
+
         prev_style = pdf.text_style
         pdf.set_text_style(self.style)
        
@@ -32,7 +36,7 @@ class Regex1Group(MDBlock):
 
         pdf.set_text_style(prev_style)
         self.buffer = [] 
-
+        
 class H1Block(Regex1Group):
     def __init__(self, pool: StylePool):
         super().__init__(pool)

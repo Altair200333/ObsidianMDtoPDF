@@ -13,8 +13,9 @@ Export any md file to pdf preserving original style
 bottom text
 ```
 
+text [link to the page](https://github.com/Altair200333/ObsidianMDtoPDF) more text
+
 ### Different header styles
-[link to the page](https://github.com/Altair200333/ObsidianMDtoPDF2)
 # Title 1
 ## Title 2
 ### Title 3
