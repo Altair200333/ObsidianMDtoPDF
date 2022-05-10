@@ -64,6 +64,7 @@ pdf.output("output.pdf")
 - [x] Convert text headers
 - [x] Process links
 - [ ] Process images
+- [ ] html tags
 - [ ] Turn it into Obsidian extention 
 
 <!-- MARKDOWN LINKS & IMAGES -->
