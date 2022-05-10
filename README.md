@@ -34,7 +34,7 @@ Obsidian allows you to create beautiful documents but normal Md to PDF convertes
 
 ## Usage
 
-```
+```python
 # import styles
 pool = import_obsidian_styles("your_style.css")
 # read your document
@@ -53,7 +53,7 @@ pdf.output("output.pdf")
 
 ## Reference - Left; Right - Converted
 
-<img src='imgs/s0.png' width='300'>
+<img src='imgs/s0.png' width='300'><nobr>
 <img src='imgs/s1.png' width='300'>
 
 <br>
